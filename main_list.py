@@ -39,15 +39,53 @@ class Matrix():
         if matrix[row1_num]!=matrix[row2_num]:
             matrix[row1_num], matrix[row2_num]=matrix[row2_num], matrix[row1_num]
 
+class Message():
+    def __init__(self, matrixobject):
+        self.size=matrixobject.size
+        self.bool_message=[]
 
-a=Matrix(1000)
+    def CharToBool(self, char):
+        return [bool(int(x)) for x in (format(ord(char), 'b'))]
 
-for i in range (30000):
-     a.ENunit_operation()
+    def MessageToBool(self, message):
+        for char in message:
+            self.bool_message+=(self.CharToBool(char))
+
+    def ReshapeBoolList(self):
+        self.reshaped_bool_message=[]
+
+        if len(self.bool_message)%self.size!=0:
+            for i in range (0,(len(self.bool_message)//self.size)):
+                self.reshaped_bool_message.append(self.bool_message[(i)*self.size:self.size*(i+1)])
+
+            last_frag=self.bool_message[(len(self.bool_message)//self.size)*self.size:]
+            while len(last_frag) < self.size:
+                last_frag.append(False)
+            self.reshaped_bool_message.append(last_frag)
+
+        else:
+            for i in range (0,(len(self.bool_message)//self.size)):
+                self.reshaped_bool_message.append(self.bool_message[(i)*self.size:self.size*(i+1)])
+
+
+a=Matrix(100)
+m=Message(a)
+m.MessageToBool("Hello World!")
+m.ReshapeBoolList()
+
+# print(len(m.bool_message))
+# print(m.bool_message)
+# print(m.reshaped_bool_message)
+# print(len(m.reshaped_bool_message[0]))
+
+
+
+#for i in range (30000):
+#     a.ENunit_operation()
 #     print(a.history_matrix)
 #     print("\n")
-for i in range (30000):
-     a.DEunit_operation()
+#for i in range (30000):
+#     a.DEunit_operation()
 #     print(a.history_matrix)
 #     print("\n")
 
