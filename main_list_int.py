@@ -1,4 +1,5 @@
 import random as random
+
 class Matrix():
     def __init__(self, size):
         self.size=size
@@ -48,18 +49,21 @@ class Message():
     def __init__(self, matrixobject):
         self.matrixobject=matrixobject
         self.size=self.matrixobject.size
+
+    def charToBin(self, char):
+        return [int(x) for x in '{0:08b}'.format(ord(char))]
+
+    def binToChar(self, bin):
+        return chr(int(bin, 2))
+
+    def messageToBin(self, message):
         self.bool_message=[]
-
-    def CharToBin(self, char):
-        return [int(x) for x in (format(ord(char), 'b'))]
-
-    def MessageToBin(self, message):
         for char in message:
-            self.bool_message+=(self.CharToBin(char))
+            self.bool_message+=(self.charToBin(char))
 
         return self.bool_message
 
-    def ReshapeBinList(self, bool_message):
+    def reshapeBinList(self, bool_message):
         self.reshaped_bool_message=[]
 
         if len(bool_message)%self.size!=0:
@@ -80,7 +84,31 @@ class Message():
 
         return self.reshaped_bool_message
 
-    def ENDECrypt(self, message, matrix):
+    def list_to_string(self, list):
+        string=""
+        for i in list:
+            for j in i:
+                string+=str(j)
+        return string
+
+    def cut_zeros(self,string):
+        return string[:len(string)-len(string)%8]
+
+    def messageToText(self, message):
+        self.message=self.cut_zeros(self.list_to_string(message))
+        self.final_message=""
+        for i in range(len(self.message)//8):
+            self.final_message+=(self.binToChar(self.message[i*8:(i+1)*8]))
+
+        return self.final_message
+
+class ENDECrytpion():
+    def __init__(self, matrixobject):
+        self.matrixobject=matrixobject
+        self.size=self.matrixobject.size
+
+
+    def ende_crypt(self, message, matrix):
         self.endecrypted_message=[]
         self.helplist=[]
         for a in message:
@@ -93,53 +121,29 @@ class Message():
         return self.endecrypted_message
 
 
+class Run():
+    def __init__(self):
+        self.a=Matrix(1000)
+        self.a.generate_matrices(30000)
+        self.m=Message(self.a)
+        self.ende=ENDECrytpion(self.a)
+
+        self.encrypt(input("Message to encrypt: "))
+        self.decrypt(input("Messege to decrypt: "))
+
+    def encrypt(self, input):
+        self.bool_message=self.m.messageToBin(input)
+        print("Message in a bool format:\n",self.bool_message,"\n")
+        self.reshaped_message=self.m.reshapeBinList(self.bool_message)
+        print("Message in a bool format reshaped to matrix size:\n",self.reshaped_message,"\n")
+        self.encrypted=self.ende.ende_crypt(self.reshaped_message, self.a.ENmatrix)
+        print("Encrypted:\n",self.m.list_to_string(self.encrypted))
+    def decrypt(self, input):
+        self.decrypted=self.ende.ende_crypt(self.m.reshapeBinList([int(x) for x in input]), self.a.DEmatrix)
+        print("Decrypted:\n",self.m.list_to_string(self.decrypted))
+        print("\n")
+        print("\n")
+        print(self.m.messageToText(self.decrypted))
 
 
-a=Matrix(1000)
-a.generate_matrices(30000)
-m=Message(a)
-bool_message=m.MessageToBin("a")
-print("Message in bool format:\n",bool_message,"\n")
-reshaped_message=m.ReshapeBinList(bool_message)
-print("Message in bool format reshaped to matrix size:\n",reshaped_message,"\n")
-encrypted=m.ENDECrypt(reshaped_message, a.ENmatrix)
-print("Encrypted:\n",encrypted)
-decrypted=m.ENDECrypt(encrypted, a.DEmatrix)
-print("Decrypted:\n",decrypted)
-print("\n")
-print("\n")
-print(str(decrypted))
-#print("ENM:\n",a.ENmatrix)
-#print("DEM:\n",a.DEmatrix)
-
-
-
-
-
-# a=Matrix(3)
-# m=Message(a)
-# m.MessageToBool("a")
-# m.ReshapeBoolList()
-# print(m.reshaped_bool_message)
-# # print(len(m.bool_message))
-# # print(m.bool_message)
-# # print(m.reshaped_bool_message)
-# # print(len(m.reshaped_bool_message))
-# # print(len(m.bool_message))
-# for i in range (10):
-#      a.ENunit_operation()
-# #     print(a.history_matrix)
-# #     print("\n")
-# for i in range (10):
-#      a.DEunit_operation()
-# #     print(a.history_matrix)
-# #     print("\n")
-# m.ENDECrypt(m.reshaped_bool_message,a.ENmatrix)
-# print(m.endecrypted_message)
-# print("\n")
-# #print(a.entry_matrix)
-# print(a.ENmatrix)
-# print(a.DEmatrix)
-# print("\n")
-# m.ENDECrypt(m.endecrypted_message,a.DEmatrix)
-# print(m.endecrypted_message)
+r=Run()
