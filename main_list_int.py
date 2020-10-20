@@ -43,6 +43,25 @@ class Matrix():
         for i in range(operation_num):
             self.DEunit_operation()
 
+class MatrixFileManagement():
+    def __init__(self, messageobj):
+        self.messageobj=messageobj
+
+    def matrix_to_file(self, filename, matrix):
+        with open(filename, 'a+') as f:
+            f.write(str(self.messageobj.size))
+            f.write("\n")
+            f.write(self.messageobj.list_to_string(matrix))
+
+    def file_to_matrix(self, filename):
+        self.matrix=[]
+        with open(filename, 'r') as f:
+            self.size=int(f.readline())
+            self.matrix_string=f.readline()
+            for i in range(self.size):
+                self.matrix.append([int(x) for x in self.matrix_string[i*self.size:(i+1)*self.size]])
+
+        return self.matrix
 
 
 class Message():
@@ -71,11 +90,6 @@ class Message():
                 self.reshaped_bool_message.append(bool_message[(i)*self.size:self.size*(i+1)])
 
             last_frag=bool_message[(len(bool_message)//self.size)*self.size:]
-
-            #think about if False addition has any sense!!!
-#            while len(last_frag) < self.size:
-#                last_frag.append(False)
-
             self.reshaped_bool_message.append(last_frag)
 
         else:
@@ -122,14 +136,23 @@ class ENDECrytpion():
 
 
 class Run():
-    def __init__(self):
-        self.a=Matrix(1000)
-        self.a.generate_matrices(30000)
+    def __init__(self, runmode): #runmode: 0 - generate matrices, 1 - load matrices from file
+        self.a=Matrix(100)
         self.m=Message(self.a)
         self.ende=ENDECrytpion(self.a)
+        self.mfm=MatrixFileManagement(self.m)
+        if runmode==0:
+            self.a.generate_matrices(3000)
+            if input("Generated matrices. Save(y/n)?")=='y':
+                self.save_matrices()
+        else:
+            self.a.DEmatrix=self.mfm.file_to_matrix("privatekey.txt")
+            self.a.ENmatrix=self.mfm.file_to_matrix("publickey.txt")
 
-        self.encrypt(input("Message to encrypt: "))
-        self.decrypt(input("Messege to decrypt: "))
+
+
+        self.encrypt(input("Message to encrypt: ")) #ASCII string
+        self.decrypt(input("Messege to decrypt: ")) #binary values (0,1) string
 
     def encrypt(self, input):
         self.bool_message=self.m.messageToBin(input)
@@ -145,5 +168,10 @@ class Run():
         print("\n")
         print(self.m.messageToText(self.decrypted))
 
+    def save_matrices(self):
+       self.mfm.matrix_to_file("publickey.txt", self.a.ENmatrix)
+       self.mfm.matrix_to_file("privatekey.txt", self.a.DEmatrix)
 
-r=Run()
+
+
+r=Run(int(input("runmode: 0 - generate matrices, 1 - load matrices from file:")))
