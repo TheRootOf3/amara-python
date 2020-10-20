@@ -1,7 +1,4 @@
 import random as random
-import operator as operator
-import cProfile
-from functools import reduce
 
 class Matrix():
     def __init__(self, size):

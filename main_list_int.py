@@ -1,8 +1,4 @@
 import random as random
-import operator as operator
-import cProfile
-from functools import reduce
-
 class Matrix():
     def __init__(self, size):
         self.size=size
@@ -54,16 +50,16 @@ class Message():
         self.size=self.matrixobject.size
         self.bool_message=[]
 
-    def CharToBool(self, char):
+    def CharToBin(self, char):
         return [int(x) for x in (format(ord(char), 'b'))]
 
-    def MessageToBool(self, message):
+    def MessageToBin(self, message):
         for char in message:
-            self.bool_message+=(self.CharToBool(char))
+            self.bool_message+=(self.CharToBin(char))
 
         return self.bool_message
 
-    def ReshapeBoolList(self, bool_message):
+    def ReshapeBinList(self, bool_message):
         self.reshaped_bool_message=[]
 
         if len(bool_message)%self.size!=0:
@@ -99,12 +95,12 @@ class Message():
 
 
 
-a=Matrix(3)
-a.generate_matrices(10)
+a=Matrix(1000)
+a.generate_matrices(30000)
 m=Message(a)
-bool_message=m.MessageToBool("a")
+bool_message=m.MessageToBin("a")
 print("Message in bool format:\n",bool_message,"\n")
-reshaped_message=m.ReshapeBoolList(bool_message)
+reshaped_message=m.ReshapeBinList(bool_message)
 print("Message in bool format reshaped to matrix size:\n",reshaped_message,"\n")
 encrypted=m.ENDECrypt(reshaped_message, a.ENmatrix)
 print("Encrypted:\n",encrypted)
@@ -112,8 +108,9 @@ decrypted=m.ENDECrypt(encrypted, a.DEmatrix)
 print("Decrypted:\n",decrypted)
 print("\n")
 print("\n")
-print("ENM:\n",a.ENmatrix)
-print("DEM:\n",a.DEmatrix)
+print(str(decrypted))
+#print("ENM:\n",a.ENmatrix)
+#print("DEM:\n",a.DEmatrix)
 
 
 
