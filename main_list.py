@@ -5,7 +5,6 @@ import cProfile
 class Matrix():
     def __init__(self, size):
         self.size=size
-        self.entry_matrix=[[(True if j==i else False) for j in range(0,size)] for i in range(0,size)]
         self.ENmatrix=[[(True if j==i else False) for j in range(0,size)] for i in range(0,size)]
         self.DEmatrix=[[(True if j==i else False) for j in range(0,size)] for i in range(0,size)]
 
@@ -26,7 +25,6 @@ class Matrix():
             self.history_matrix.append([True, self.row1_num, self.row2_num])
 
     def DEunit_operation(self):
-        #if len(self.history_matrix)>0:
         if not self.history_matrix[-1][0]:
             self.add_rows_map(self.history_matrix[-1][1], self.history_matrix[-1][2], self.DEmatrix)
         else:
@@ -35,12 +33,7 @@ class Matrix():
         del self.history_matrix[-1]
 
     def add_rows_map(self, row1_num, row2_num, matrix):
-        matrix[row1_num]=list(map(operator.xor, matrix[row1_num], matrix[row2_num]))
-        matrix[row1_num]=list(map(operator.xor, matrix[row1_num], matrix[row2_num]))
-
-    def add_rows(self, row1_num, row2_num, matrix):
-        for i in range (self.size):
-            matrix[row1_num][i]=(matrix[row1_num][i]!=matrix[row2_num][i]) #Saving addition result on the first row num
+        matrix[row1_num]=list(map(operator.xor, matrix[row1_num], matrix[row2_num])) #Saving addition result on the first row num
 
     def swap_rows(self, row1_num, row2_num, matrix):
         if matrix[row1_num]!=matrix[row2_num]:
