@@ -1,4 +1,5 @@
 import random as random
+import sympy as sm
 
 class Matrix():
     def __init__(self, size):
@@ -136,15 +137,18 @@ class ENDECrytpion():
 
 
 class Run():
-    def __init__(self, runmode): #runmode: 0 - generate matrices, 1 - load matrices from file
-        self.a=Matrix(100)
+    def __init__(self): #runmode: 0 - generate matrices, 1 - load matrices from file
+        self.a=Matrix(50)
         self.m=Message(self.a)
         self.ende=ENDECrytpion(self.a)
         self.mfm=MatrixFileManagement(self.m)
 
+        self.runmode_matrix()
+        self.runmode_action()
 
             # reading matrices from file/generating matrices mode selection
-        if runmode==0:
+    def runmode_matrix(self):
+        if int(input("runmode: 0 - generate matrices, 1 - load matrices from file: "))==0:
             self.a.generate_matrices(3000)
             if input("Generated matrices. Save(y/n)?")=='y':
                 self.save_matrices()
@@ -152,8 +156,8 @@ class Run():
             self.a.DEmatrix=self.mfm.file_to_matrix("privatekey.txt")
             self.a.ENmatrix=self.mfm.file_to_matrix("publickey.txt")
 
-
             # encryption/decryption/both mode selection
+    def runmode_action(self):
         self.input=int(input("runmode: 0 - encrypt, 1 - decrypt, 2 - both: "))
         if self.input==0:
             self.encrypt(input("Message to encrypt: ")) #ASCII string
@@ -162,6 +166,7 @@ class Run():
         else:
             self.encrypt(input("Message to encrypt: ")) #ASCII string
             self.decrypt(input("Messege to decrypt: ")) #binary values (0,1) string
+
 
     def encrypt(self, input):
         self.bool_message=self.m.messageToBin(input)
@@ -184,4 +189,4 @@ class Run():
 
 
 
-r=Run(int(input("runmode: 0 - generate matrices, 1 - load matrices from file: ")))
+r=Run()
