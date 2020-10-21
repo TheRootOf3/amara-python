@@ -59,10 +59,9 @@ class MatrixFileManagement():
         with open(filename, 'r') as f:
             self.size=int(f.readline())
             self.matrix_string=f.readline()
-            for i in range(self.size):
-                self.matrix.append([int(x) for x in self.matrix_string[i*self.size:(i+1)*self.size]])
+            self.matrix=[[int(x) for x in self.matrix_string[i*self.size:(i+1)*self.size]] for i in range (self.size)]
 
-        return self.matrix
+        return self.matrix, self.size
 
 
 class Message():
@@ -138,7 +137,7 @@ class ENDECrytpion():
 
 class Run():
     def __init__(self): #runmode: 0 - generate matrices, 1 - load matrices from file
-        self.a=Matrix(50)
+        self.a=Matrix(10)
         self.m=Message(self.a)
         self.ende=ENDECrytpion(self.a)
         self.mfm=MatrixFileManagement(self.m)
@@ -153,8 +152,8 @@ class Run():
             if input("Generated matrices. Save(y/n)?")=='y':
                 self.save_matrices()
         else:
-            self.a.DEmatrix=self.mfm.file_to_matrix("privatekey.txt")
-            self.a.ENmatrix=self.mfm.file_to_matrix("publickey.txt")
+            self.a.DEmatrix, self.a.size = self.mfm.file_to_matrix("privatekey.txt")
+            self.a.ENmatrix, self.a.size = self.mfm.file_to_matrix("publickey.txt")
 
             # encryption/decryption/both mode selection
     def runmode_action(self):
@@ -186,7 +185,5 @@ class Run():
     def save_matrices(self):
        self.mfm.matrix_to_file("publickey.txt", self.a.ENmatrix)
        self.mfm.matrix_to_file("privatekey.txt", self.a.DEmatrix)
-
-
 
 r=Run()
