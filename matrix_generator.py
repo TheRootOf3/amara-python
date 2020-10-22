@@ -9,19 +9,18 @@ class MatrixGenerator():
         self.history_matrix=[] #[bool operation type(False - addition, True - swap), int row1 number, int row2 number]
 
     def ENunit_operation(self):
-        a=random.randint(5,7)
-        self.row1_num = random.randint(0,self.size-1)
-        self.row2_num = random.randint(0,self.size-1)
+        row1_num = random.randint(0,self.size-1)
+        row2_num = random.randint(0,self.size-1)
 
-        while(self.row1_num==self.row2_num):
-            self.row2_num = random.randint(0,self.size-1)
+        while(row1_num==row2_num):
+            row2_num = random.randint(0,self.size-1)
 
-        if not self.row1_num%2:
-            self.ENmatrix[self.row1_num]=self.add_rows_map(self.row1_num, self.row2_num, self.ENmatrix)
-            self.history_matrix.append([False, self.row1_num, self.row2_num])
+        if not row1_num%2:
+            self.ENmatrix[row1_num]=self.add_rows_map(row1_num, row2_num, self.ENmatrix)
+            self.history_matrix.append([False, row1_num, row2_num])
         else:
-            self.ENmatrix[self.row1_num], self.ENmatrix[self.row2_num] = self.swap_rows(self.row1_num, self.row2_num, self.ENmatrix)
-            self.history_matrix.append([True, self.row1_num, self.row2_num])
+            self.ENmatrix[row1_num], self.ENmatrix[row2_num] = self.swap_rows(row1_num, row2_num, self.ENmatrix)
+            self.history_matrix.append([True, row1_num, row2_num])
 
     def DEunit_operation(self):
         if not self.history_matrix[-1][0]:
