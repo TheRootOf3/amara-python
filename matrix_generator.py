@@ -1,4 +1,5 @@
 import random as random
+import operator as operator
 
 class MatrixGenerator():
     def __init__(self, size):
@@ -31,8 +32,8 @@ class MatrixGenerator():
         del self.history_matrix[-1]
 
     def add_rows_map(self, row1_num, row2_num, matrix):
-        return list(map(lambda a, b : (a+b)%2, matrix[row1_num], matrix[row2_num])) #Saving addition result on the first row num
-
+        #return list(map(lambda a, b : (a+b)%2, matrix[row1_num], matrix[row2_num])) #Saving addition result on the first row num
+        return list(map(operator.xor, matrix[row1_num], matrix[row2_num])) #operator.xor optimizes code #Saving addition result on the first row num
     def swap_rows(self, row1_num, row2_num, matrix):
         if matrix[row1_num]!=matrix[row2_num]:
             return matrix[row2_num], matrix[row1_num]

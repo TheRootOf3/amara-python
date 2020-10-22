@@ -1,3 +1,4 @@
+import time as time
 from matrix_generator import *
 from message_modifier import *
 from ENDE_cryption_algo import *
@@ -20,10 +21,14 @@ class Run():
             self.size=int(input("Choose matrix size (cannot be n%3==2): "))
             while(self.size%3==2):
                 self.size=int(input("Choose matrix size (cannot be n%3==2): "))
+            number_of_operations=int(input("Choose number of elementary operations: "))
+            start = time.time()
             self.a=MatrixGenerator(self.size)
-            self.a.generate_matrices(int(input("Choose number of elementary operations: ")))
+            self.a.generate_matrices(number_of_operations)
             self.ENmatrix=self.a.ENmatrix
             self.DEmatrix=self.a.DEmatrix
+            end = time.time()
+            print("Matrix generation elapsed time:", end-start)
 
             if input("Generated matrices. Save(y/n)?")=='y':
                 self.save_matrices()
@@ -46,19 +51,24 @@ class Run():
 
     def encrypt(self, input):
         bool_message=self.m.messageToBin(input+"\x03") #Adding ETX char in order to decrypt correctly
-        print("Message in a bool format:\n",bool_message,"\n")
+        # print("Message in a bool format:")
+        # print(bool_message)
+        # print("\n")
         reshaped_message=self.m.reshapeBinList(bool_message)
-        print("Message in a bool format reshaped to matrix size:\n",reshaped_message,"\n")
+        # print("Message in a bool format reshaped to matrix size:")
+        # print(reshaped_message)
         encrypted=self.ende.ende_crypt(reshaped_message, self.ENmatrix)
-        print("Encrypted:\n",self.m.list_to_string(encrypted))
+        print("\nEncrypted:")
+        print(self.m.list_to_string(encrypted))
+        print("\n")
 
     def decrypt(self, input):
         decrypted=self.ende.ende_crypt(self.m.reshapeBinList([int(x) for x in input]), self.DEmatrix)
-        print("\n")
-        print(decrypted)
-        print("\n")
-        print("Decrypted:\n",self.m.list_to_string(decrypted))
-        print("\n")
+        # print("\n")
+        # print(decrypted)
+        # print("\n")
+        # print("Decrypted:\n",self.m.list_to_string(decrypted))
+        print("\nDecrypted text message:")
         print(self.m.messageToText(decrypted))
 
     def save_matrices(self):
