@@ -1,3 +1,5 @@
+'''This file contains all functions for performing encryption and decryption'''
+
 import time as time
 import operator as operator
 
@@ -5,6 +7,11 @@ class ENDECrytpion():
     def __init__(self, size):
         self.size=size
 
+    '''
+    En/de cryption function, depending on message,
+    xors every element in given(defined by message fragment)
+    rows in en/de matrix
+    '''
     def ende_crypt(self, message, matrix):
         endecrypted_message=[]
         helplist=[]
