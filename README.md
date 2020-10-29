@@ -1,6 +1,6 @@
 # amara-python repo
 
-## Running
+##Running
 In order to run the program, open terminal in repo directory and simply:
 
 ```sh
