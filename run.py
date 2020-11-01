@@ -19,9 +19,7 @@ class Run():
     ''' reading matrices from file/generating matrices mode selection function'''
     def runmode_matrix(self):
         if int(input("runmode: 0 - generate matrices, 1 - load matrices from file: "))==0:
-            self.size=int(input("Choose matrix size (cannot be n%3==2): "))
-            while(self.size%3==2):
-                self.size=int(input("Choose matrix size (cannot be n%3==2): "))
+            self.size=int(input("Choose matrix size: "))
             number_of_operations=int(input("Choose number of elementary operations: "))
             start = time.time()
             self.a=MatrixGenerator(self.size)
