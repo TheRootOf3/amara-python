@@ -7,6 +7,10 @@ In order to run the program, open terminal in repo directory and simply:
 python run.py
 ```
 
+## Algorithm specification
+In file _AMARA_spec.pdf_ there is information on how the algorithm works.
+
+
 ## About AMARA
 Reimplementation of the AMARA algorithm using python.
 
