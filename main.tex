@@ -1,0 +1,368 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[table]{xcolor}
+\usepackage[a4paper, portrait, margin=0.7in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{indentfirst}
+\usepackage{ragged2e}
+\pagestyle{fancy}
+\usepackage{xcolor}
+
+
+\definecolor{Mycolor1}{HTML}{228B22}
+\definecolor{Mycolor2}{HTML}{FF8C00}
+\usepackage{biblatex} %Imports biblatex package
+\addbibresource{ref.bib} %Import the bibliography file
+
+\lhead{Andrzej Szablewski}
+\rhead{AMARA Algorithm}
+
+\author{Andrzej Szablewski}
+\title{AMARA Algorithm}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+    The AMARA algorithm is an asymmetric (public key/private key) encryption method based on binary matrices  developed in 2016 by Andrzej Szablewski, Radosław Peszkowski and Mateusz Janus under supervision of Prof. Tomasz Szemberg. The idea for creating such a method originated from the research on specific sets permutations \cite{research}.
+
+\section{Algorithm overview}
+    Both public and private keys are considerably large binary matrices of a size $n$ x $n$, which are inverse to each other. Data to encrypt or decrypt must be in the binary format. Cipher breaking difficulty lies in the matrix inversion complexity, which lower bound has been proven \cite{matrix_proof} to be: $$O(n^2\ log(n)),$$ which is not an impressive complexity comparing to currently used methods. However, since AMARA encryption and decryption processes are based on $xor$ operation between certain elements of the matrix, the algorithm is considerably quick.
+
+\section{Matrices generation}
+    In order to create encryption-decryption binary matrices pair, which are inverse to each other, the creation process begins with an identity matrix of a certain size. Example of an identity matrix of size 3x3:
+    $$M_i=\begin{bmatrix}
+    1 & 0 & 0\\
+    0 & 1 & 0\\
+    0 & 0 & 1
+    \end{bmatrix}$$
+
+    \subsection{Encryption matrix generation}
+        Creating an encryption matrix (public key) is based on performing multiple $elementary\ operations$ on a matrix.
+        There are two $elementary\ operations$ used in the algorithm.
+        \begin{enumerate}
+            \item 
+                Swapping given two rows. For example swapping rows 1 and 2:
+                $$M_1=\begin{bmatrix}
+                \color{blue}1 & \color{blue}0 & \color{blue}0\\
+                \color{red}0 & \color{red}1 & \color{red}0\\
+                0 & 0 & 1
+                \end{bmatrix} \quad
+                \longrightarrow 
+                \quad M_2=\begin{bmatrix}
+                \color{red}0 & \color{red}1 & \color{red}0\\
+                \color{blue}1 & \color{blue}0 & \color{blue}0\\
+                0 & 0 & 1
+                \end{bmatrix}$$
+            \item 
+                Adding every corresponding element of given two rows in modulo 2 and storing the results on an indicated row. For example adding every corresponding element in modulo 2 of rows 1 and 3 and storing result on row 1:
+                \footnotesize{
+                $$M_1=\begin{bmatrix}
+                \color{blue}1 & \color{blue}0 & \color{blue}0\\
+                0 & 1 & 0\\
+                \color{red}0 & \color{red}0 & \color{red}1
+                \end{bmatrix} \quad
+                \longrightarrow 
+                \quad M_2=\begin{bmatrix}
+                \color{blue}1\color{black}+\color{red}0\color{black}\equiv \color{Mycolor1}1 \color{black}\,(mod\,2) \ & \color{blue}0\color{black}+\color{red}0\color{black}\equiv \color{Mycolor1}0 \color{black}\,(mod\,2) \ & \color{blue}0\color{black}+\color{red}1\color{black}\equiv \color{Mycolor1}1 \color{black}\,(mod\,2) \\
+                0 & 1 & 0\\
+                0 & 0 & 1
+                \end{bmatrix}\quad
+                \longrightarrow 
+                \quad M_2=\begin{bmatrix}
+                \color{Mycolor1}1 & \color{Mycolor1}0 & \color{Mycolor1}1\\
+                0 & 1 & 0\\
+                0 & 0 & 1
+                \end{bmatrix}$$
+                }
+        \end{enumerate}
+
+    \subsection{Decryption matrix generation}
+        Creating a decryption matrix (private key) is as simple as performing exactly the same $elementary\ operations$ that have been performed on the encryption matrix but in the reversed order.
+
+\section{Encryption}
+    In order to encrypt a binary message using an encryption matrix of size $n$ x $n$, the message must be cut into vectors, each of $n$ elements. If the length of the message is not a multiple of $n$, the last vector must be complemented to the size of $n$ with zeros.
+    After encryption, all vectors are linked together to form the encrypted message.
+    
+\subsection{Vector encryption}
+    Each element in the vector is corresponding to each row of matrix in the following way:
+
+    $$
+    M_{EN}=\begin{bmatrix}
+    \color{red}m_{1,1} & \color{red}m_{1,2} & \cdots & \color{red}m_{1,n} \\
+    \color{blue}m_{2,1} & \color{blue}m_{2,2} & \cdots & \color{blue}m_{2,n} \\
+    \vdots  & \vdots  & \ddots & \vdots  \\
+    \color{Mycolor1}m_{n,1} & \color{Mycolor1}m_{n,2} & \cdots & \color{Mycolor1}m_{n,n} 
+    \end{bmatrix}\quad
+    V=\begin{bmatrix}
+    \color{red}v_{1}  \\
+    \color{blue}v_{2}  \\
+    \vdots   \\
+    \color{Mycolor1}v_{n}  
+    \end{bmatrix}
+    \quad$$
+    
+    
+    Encrypted vector is a result of matrix $M_{EN}$ and vector $V$ multiplication in modulo 2:
+    $$V_{EN}= \left(
+    \begin{bmatrix}
+    \color{red}m_{1,1} & \color{red}m_{1,2} & \cdots & \color{red}m_{1,n} \\
+    \color{blue}m_{2,1} & \color{blue}m_{2,2} & \cdots & \color{blue}m_{2,n} \\
+    \vdots  & \vdots  & \ddots & \vdots  \\
+    \color{Mycolor1}m_{n,1} & \color{Mycolor1}m_{n,2} & \cdots & \color{Mycolor1}m_{n,n} 
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix}
+    \color{red}v_{1}  \\
+    \color{blue}v_{2}  \\
+    \vdots   \\
+    \color{Mycolor1}v_{n}  
+    \end{bmatrix}\right)
+    mod\,2
+    =
+    \begin{bmatrix}
+    \color{red}m_{1,1} \color{black}\cdot \color{red}v_1 \color{black}+ \color{red}m_{1,2} \color{black}\cdot \color{blue}v_2 \color{black} + \color{black}\cdots \color{black}+ \color{red}m_{1,n} \color{black}\cdot \color{Mycolor1}v_n\\
+    \color{blue}m_{2,1} \color{black}\cdot \color{red}v_1 \color{black}+ \color{blue}m_{2,2} \color{black}\cdot \color{blue}v_2 \color{black} + \color{black}\cdots \color{black}+ \color{blue}m_{2,n} \color{black}\cdot \color{Mycolor1}v_n\\
+    \vdots   \\
+    \color{Mycolor1}m_{n,1} \color{black}\cdot \color{red}v_1 \color{black}+ \color{Mycolor1}m_{n,2} \color{black}\cdot \color{blue}v_2 \color{black} + \color{black}\cdots \color{black}+ \color{Mycolor1}m_{n,n} \color{black}\cdot \color{Mycolor1}v_n
+    \end{bmatrix} 
+    mod\,2
+    $$
+
+\section{Decryption}
+    Decryption algorithm works exactly as the encryption algorithm but instead of using the encryption matrix $M_{EN}$ it uses the decryption matrix $M_{DE}$. After decryption, all vectors are linked together to form the decrypted message.
+
+\subsection{Vector decryption}
+    Each element in the vector is corresponding to each row of matrix in the following way:
+
+    $$
+    M_{DE}=\begin{bmatrix}
+    \color{red}m_{1,1} & \color{red}m_{1,2} & \cdots & \color{red}m_{1,n} \\
+    \color{blue}m_{2,1} & \color{blue}m_{2,2} & \cdots & \color{blue}m_{2,n} \\
+    \vdots  & \vdots  & \ddots & \vdots  \\
+    \color{Mycolor1}m_{n,1} & \color{Mycolor1}m_{n,2} & \cdots & \color{Mycolor1}m_{n,n} 
+    \end{bmatrix}\quad
+    V=\begin{bmatrix}
+    \color{red}v_{1}  \\
+    \color{blue}v_{2}  \\
+    \vdots   \\
+    \color{Mycolor1}v_{n}  
+    \end{bmatrix}
+    \quad$$
+    
+    Decrypted vector is a result of matrix $M_{DE}$ and vector $V$ multiplication in modulo 2:
+    $$V_{DE}= \left(
+    \begin{bmatrix}
+    \color{red}m_{1,1} & \color{red}m_{1,2} & \cdots & \color{red}m_{1,n} \\
+    \color{blue}m_{2,1} & \color{blue}m_{2,2} & \cdots & \color{blue}m_{2,n} \\
+    \vdots  & \vdots  & \ddots & \vdots  \\
+    \color{Mycolor1}m_{n,1} & \color{Mycolor1}m_{n,2} & \cdots & \color{Mycolor1}m_{n,n} 
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix}
+    \color{red}v_{1}  \\
+    \color{blue}v_{2}  \\
+    \vdots   \\
+    \color{Mycolor1}v_{n}  
+    \end{bmatrix}\right)
+    mod\,2
+    =
+    \begin{bmatrix}
+    \color{red}m_{1,1} \color{black}\cdot \color{red}v_1 \color{black}+ \color{red}m_{1,2} \color{black}\cdot \color{blue}v_2 \color{black} + \color{black}\cdots \color{black}+ \color{red}m_{1,n} \color{black}\cdot \color{Mycolor1}v_n\\
+    \color{blue}m_{2,1} \color{black}\cdot \color{red}v_1 \color{black}+ \color{blue}m_{2,2} \color{black}\cdot \color{blue}v_2 \color{black} + \color{black}\cdots \color{black}+ \color{blue}m_{2,n} \color{black}\cdot \color{Mycolor1}v_n\\
+    \vdots   \\
+    \color{Mycolor1}m_{n,1} \color{black}\cdot \color{red}v_1 \color{black}+ \color{Mycolor1}m_{n,2} \color{black}\cdot \color{blue}v_2 \color{black} + \color{black}\cdots \color{black}+ \color{Mycolor1}m_{n,n} \color{black}\cdot \color{Mycolor1}v_n
+    \end{bmatrix} 
+    mod\,2
+    $$
+
+\newpage
+\section{Encryption \& decryption example}
+    Let message be as follows: $$m = 101011$$\\
+    \indent Lets set a pair of $3x3$ encryption-decryption matrices, which are inverse to each other:
+    $$M_{EN} = {M_{DE}}^{-1}$$
+    \vspace{1mm}
+    $$M_{EN}=\begin{bmatrix}
+    1 & 1 & 1 \\
+    0 & 0 & 1 \\
+    1 & 0 & 1
+    \end{bmatrix} \quad
+    M_{DE}=\begin{bmatrix}
+    0 & 1 & 1 \\
+    1 & 0 & 1 \\
+    0 & 1 & 0
+    \end{bmatrix}$$ \vspace{2mm}
+    
+    \subsection{Encryption process}
+        Firstly, lets divide it into vectors $V_i$, each of length $3$.
+        \vspace{1mm}
+        $$V_1=\begin{bmatrix}
+        1  \\
+        0  \\
+        1  
+        \end{bmatrix} \quad
+        V_2=\begin{bmatrix}
+        0  \\
+        1  \\
+        1  
+        \end{bmatrix}$$
+    
+        Lets encrypt $V_1$ by multiplying matrix $M_{EN}$ by vector $V_1$.
+        $$
+        V_{1EN}=
+        \left(
+        \begin{bmatrix}
+        1 & 1 & 1 \\
+        0 & 0 & 1 \\
+        1 & 0 & 1
+        \end{bmatrix} \cdot
+        \begin{bmatrix}
+        1  \\
+        0  \\
+        1  
+        \end{bmatrix}
+        \right)
+        mod \, 2
+        =
+        \begin{bmatrix}
+        0  \\
+        1  \\
+        0  
+        \end{bmatrix}
+        $$
+        
+        $$
+        V_{1EN}=\begin{bmatrix}
+        1  \\
+        0  \\
+        1  
+        \end{bmatrix}$$
+        \vspace{5mm}
+        
+        Now, lets encrypt $V_2$ by multiplying matrix $M_{EN}$ by vector $V_2$.
+        $$
+        V_{2EN}=
+        \left(
+        \begin{bmatrix}
+        1 & 1 & 1 \\
+        0 & 0 & 1 \\
+        1 & 0 & 1
+        \end{bmatrix} \cdot
+        \begin{bmatrix}
+        0  \\
+        1  \\
+        1  
+        \end{bmatrix}
+        \right)
+        mod \, 2
+        =
+        \begin{bmatrix}
+        1  \\
+        0  \\
+        0  
+        \end{bmatrix}
+        $$
+        
+        $$
+        V_{2EN}=\begin{bmatrix}
+        1  \\
+        0  \\
+        0  
+        \end{bmatrix}$$
+        \vspace{5mm}
+        So the encrypted message (ciphertext) $c$ is a sequence of $V_{1EN}$ and $V_{2EN}$ elements. 
+        $$c = 010100$$
+\newpage
+    \subsection{Decryption process}
+        The ciphertext from the previous example is:
+        $$c = 010100$$
+        
+        In order to decrypt the ciphertext, lets divide it into vectors $V_i$, each of length $3$.
+        \vspace{1mm}
+        $$V_1=\begin{bmatrix}
+        0  \\
+        1  \\
+        0  
+        \end{bmatrix} \quad
+        V_2=\begin{bmatrix}
+        1  \\
+        0  \\
+        0  
+        \end{bmatrix}$$
+
+        Lets decrypt $V_1$ by multiplying matrix $M_{DE}$ by vector $V_1$.
+        $$
+        V_{1DE}=
+        \left(
+        \begin{bmatrix}
+        0 & 1 & 1 \\
+        1 & 0 & 1 \\
+        0 & 1 & 0
+        \end{bmatrix} \cdot
+        \begin{bmatrix}
+        0  \\
+        1  \\
+        0  
+        \end{bmatrix}
+        \right)
+        mod \, 2
+        =
+        \begin{bmatrix}
+        1  \\
+        0  \\
+        1  
+        \end{bmatrix}
+        $$
+        
+        $$
+        V_{1DE}=\begin{bmatrix}
+        1  \\
+        0  \\
+        1  
+        \end{bmatrix}$$
+        \vspace{5mm}
+        
+        Now, lets decrypt $V_2$ by multiplying matrix $M_{DE}$ by vector $V_2$.
+        $$
+        V_{2DE}=
+        \left(
+        \begin{bmatrix}
+        0 & 1 & 1 \\
+        1 & 0 & 1 \\
+        0 & 1 & 0
+        \end{bmatrix} \cdot
+        \begin{bmatrix}
+        1  \\
+        0  \\
+        0  
+        \end{bmatrix}
+        \right)
+        mod \, 2
+        =
+        \begin{bmatrix}
+        0  \\
+        1  \\
+        1  
+        \end{bmatrix}
+        $$
+        
+        $$
+        V_{2DE}=\begin{bmatrix}
+        0  \\
+        1  \\
+        1  
+        \end{bmatrix}$$
+        \vspace{5mm}
+        
+        So the decrypted message $m$ is a sequence of $V_{1DE}$ and $V_{2DE}$ elements
+        $$m = 101011,$$
+        \indent which is the same as the original message in the beginning of the section 6, showing that the algorithm works.
+        
+\newpage
+\printbibliography %Prints bibliography
+
+
+
+\end{document}
