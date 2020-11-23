@@ -37,7 +37,7 @@
     1 & 0 & 0\\
     0 & 1 & 0\\
     0 & 0 & 1
-    \end{bmatrix}$$
+    \end{bmatrix}.$$
 
     \subsection{Encryption matrix generation}
         Creating an encryption matrix (public key) is based on performing multiple $elementary\ operations$ on a matrix.
@@ -46,36 +46,36 @@
             \item 
                 Swapping given two rows. For example swapping rows 1 and 2:
                 $$M_1=\begin{bmatrix}
-                \color{blue}1 & \color{blue}0 & \color{blue}0\\
-                \color{red}0 & \color{red}1 & \color{red}0\\
+                1 & 0 & 0\\
+                0 & 1 & 0\\
                 0 & 0 & 1
                 \end{bmatrix} \quad
                 \longrightarrow 
                 \quad M_2=\begin{bmatrix}
-                \color{red}0 & \color{red}1 & \color{red}0\\
-                \color{blue}1 & \color{blue}0 & \color{blue}0\\
+                0 & 1 & 0\\
+                1 & 0 & 0\\
                 0 & 0 & 1
-                \end{bmatrix}$$
+                \end{bmatrix}.$$
             \item 
                 Adding every corresponding element of given two rows in modulo 2 and storing the results on an indicated row. For example adding every corresponding element in modulo 2 of rows 1 and 3 and storing result on row 1:
                 \footnotesize{
                 $$M_1=\begin{bmatrix}
-                \color{blue}1 & \color{blue}0 & \color{blue}0\\
+                1 & 0 & 0\\
                 0 & 1 & 0\\
-                \color{red}0 & \color{red}0 & \color{red}1
+                0 & 0 & 1
                 \end{bmatrix} \quad
                 \longrightarrow 
                 \quad M_2=\begin{bmatrix}
-                \color{blue}1\color{black}+\color{red}0\color{black}\equiv \color{Mycolor1}1 \color{black}\,(mod\,2) \ & \color{blue}0\color{black}+\color{red}0\color{black}\equiv \color{Mycolor1}0 \color{black}\,(mod\,2) \ & \color{blue}0\color{black}+\color{red}1\color{black}\equiv \color{Mycolor1}1 \color{black}\,(mod\,2) \\
+                1\color{black}+0\color{black}\equiv 1 \color{black}\,(mod\,2) \ & 0\color{black}+0\color{black}\equiv 0 \color{black}\,(mod\,2) \ & 0\color{black}+1\color{black}\equiv 1 \color{black}\,(mod\,2) \\
                 0 & 1 & 0\\
                 0 & 0 & 1
                 \end{bmatrix}\quad
                 \longrightarrow 
                 \quad M_2=\begin{bmatrix}
-                \color{Mycolor1}1 & \color{Mycolor1}0 & \color{Mycolor1}1\\
+                1 & 0 & 1\\
                 0 & 1 & 0\\
                 0 & 0 & 1
-                \end{bmatrix}$$
+                \end{bmatrix}.$$
                 }
         \end{enumerate}
 
@@ -91,44 +91,44 @@
 
     $$
     M_{EN}=\begin{bmatrix}
-    \color{red}m_{1,1} & \color{red}m_{1,2} & \cdots & \color{red}m_{1,n} \\
-    \color{blue}m_{2,1} & \color{blue}m_{2,2} & \cdots & \color{blue}m_{2,n} \\
+    m_{1,1} & m_{1,2} & \cdots & m_{1,n} \\
+    m_{2,1} & m_{2,2} & \cdots & m_{2,n} \\
     \vdots  & \vdots  & \ddots & \vdots  \\
-    \color{Mycolor1}m_{n,1} & \color{Mycolor1}m_{n,2} & \cdots & \color{Mycolor1}m_{n,n} 
+    m_{n,1} & m_{n,2} & \cdots & m_{n,n} 
     \end{bmatrix}\quad
     V=\begin{bmatrix}
-    \color{red}v_{1}  \\
-    \color{blue}v_{2}  \\
+    v_{1}  \\
+    v_{2}  \\
     \vdots   \\
-    \color{Mycolor1}v_{n}  
-    \end{bmatrix}
+    v_{n}  
+    \end{bmatrix}.
     \quad$$
     
     
     Encrypted vector is a result of matrix $M_{EN}$ and vector $V$ multiplication in modulo 2:
     $$V_{EN}= \left(
     \begin{bmatrix}
-    \color{red}m_{1,1} & \color{red}m_{1,2} & \cdots & \color{red}m_{1,n} \\
-    \color{blue}m_{2,1} & \color{blue}m_{2,2} & \cdots & \color{blue}m_{2,n} \\
+    m_{1,1} & m_{1,2} & \cdots & m_{1,n} \\
+    m_{2,1} & m_{2,2} & \cdots & m_{2,n} \\
     \vdots  & \vdots  & \ddots & \vdots  \\
-    \color{Mycolor1}m_{n,1} & \color{Mycolor1}m_{n,2} & \cdots & \color{Mycolor1}m_{n,n} 
+    m_{n,1} & m_{n,2} & \cdots & m_{n,n} 
     \end{bmatrix}
     \cdot
     \begin{bmatrix}
-    \color{red}v_{1}  \\
-    \color{blue}v_{2}  \\
+    v_{1}  \\
+    v_{2}  \\
     \vdots   \\
-    \color{Mycolor1}v_{n}  
+    v_{n}  
     \end{bmatrix}\right)
     mod\,2
     =
     \begin{bmatrix}
-    \color{red}m_{1,1} \color{black}\cdot \color{red}v_1 \color{black}+ \color{red}m_{1,2} \color{black}\cdot \color{blue}v_2 \color{black} + \color{black}\cdots \color{black}+ \color{red}m_{1,n} \color{black}\cdot \color{Mycolor1}v_n\\
-    \color{blue}m_{2,1} \color{black}\cdot \color{red}v_1 \color{black}+ \color{blue}m_{2,2} \color{black}\cdot \color{blue}v_2 \color{black} + \color{black}\cdots \color{black}+ \color{blue}m_{2,n} \color{black}\cdot \color{Mycolor1}v_n\\
+    m_{1,1} \color{black}\cdot v_1 \color{black}+ m_{1,2} \color{black}\cdot v_2 \color{black} + \color{black}\cdots \color{black}+ m_{1,n} \color{black}\cdot v_n\\
+    m_{2,1} \color{black}\cdot v_1 \color{black}+ m_{2,2} \color{black}\cdot v_2 \color{black} + \color{black}\cdots \color{black}+ m_{2,n} \color{black}\cdot v_n\\
     \vdots   \\
-    \color{Mycolor1}m_{n,1} \color{black}\cdot \color{red}v_1 \color{black}+ \color{Mycolor1}m_{n,2} \color{black}\cdot \color{blue}v_2 \color{black} + \color{black}\cdots \color{black}+ \color{Mycolor1}m_{n,n} \color{black}\cdot \color{Mycolor1}v_n
+    m_{n,1} \color{black}\cdot v_1 \color{black}+ m_{n,2} \color{black}\cdot v_2 \color{black} + \color{black}\cdots \color{black}+ m_{n,n} \color{black}\cdot v_n
     \end{bmatrix} 
-    mod\,2
+    mod\,2.
     $$
 
 \section{Decryption}
@@ -139,50 +139,50 @@
 
     $$
     M_{DE}=\begin{bmatrix}
-    \color{red}m_{1,1} & \color{red}m_{1,2} & \cdots & \color{red}m_{1,n} \\
-    \color{blue}m_{2,1} & \color{blue}m_{2,2} & \cdots & \color{blue}m_{2,n} \\
+    m_{1,1} & m_{1,2} & \cdots & m_{1,n} \\
+    m_{2,1} & m_{2,2} & \cdots & m_{2,n} \\
     \vdots  & \vdots  & \ddots & \vdots  \\
-    \color{Mycolor1}m_{n,1} & \color{Mycolor1}m_{n,2} & \cdots & \color{Mycolor1}m_{n,n} 
+    m_{n,1} & m_{n,2} & \cdots & m_{n,n} 
     \end{bmatrix}\quad
     V=\begin{bmatrix}
-    \color{red}v_{1}  \\
-    \color{blue}v_{2}  \\
+    v_{1}  \\
+    v_{2}  \\
     \vdots   \\
-    \color{Mycolor1}v_{n}  
-    \end{bmatrix}
+    v_{n}  
+    \end{bmatrix}.
     \quad$$
     
     Decrypted vector is a result of matrix $M_{DE}$ and vector $V$ multiplication in modulo 2:
     $$V_{DE}= \left(
     \begin{bmatrix}
-    \color{red}m_{1,1} & \color{red}m_{1,2} & \cdots & \color{red}m_{1,n} \\
-    \color{blue}m_{2,1} & \color{blue}m_{2,2} & \cdots & \color{blue}m_{2,n} \\
+    m_{1,1} & m_{1,2} & \cdots & m_{1,n} \\
+    m_{2,1} & m_{2,2} & \cdots & m_{2,n} \\
     \vdots  & \vdots  & \ddots & \vdots  \\
-    \color{Mycolor1}m_{n,1} & \color{Mycolor1}m_{n,2} & \cdots & \color{Mycolor1}m_{n,n} 
+    m_{n,1} & m_{n,2} & \cdots & m_{n,n} 
     \end{bmatrix}
     \cdot
     \begin{bmatrix}
-    \color{red}v_{1}  \\
-    \color{blue}v_{2}  \\
+    v_{1}  \\
+    v_{2}  \\
     \vdots   \\
-    \color{Mycolor1}v_{n}  
+    v_{n}  
     \end{bmatrix}\right)
     mod\,2
     =
     \begin{bmatrix}
-    \color{red}m_{1,1} \color{black}\cdot \color{red}v_1 \color{black}+ \color{red}m_{1,2} \color{black}\cdot \color{blue}v_2 \color{black} + \color{black}\cdots \color{black}+ \color{red}m_{1,n} \color{black}\cdot \color{Mycolor1}v_n\\
-    \color{blue}m_{2,1} \color{black}\cdot \color{red}v_1 \color{black}+ \color{blue}m_{2,2} \color{black}\cdot \color{blue}v_2 \color{black} + \color{black}\cdots \color{black}+ \color{blue}m_{2,n} \color{black}\cdot \color{Mycolor1}v_n\\
+    m_{1,1} \color{black}\cdot v_1 \color{black}+ m_{1,2} \color{black}\cdot v_2 \color{black} + \color{black}\cdots \color{black}+ m_{1,n} \color{black}\cdot v_n\\
+    m_{2,1} \color{black}\cdot v_1 \color{black}+ m_{2,2} \color{black}\cdot v_2 \color{black} + \color{black}\cdots \color{black}+ m_{2,n} \color{black}\cdot v_n\\
     \vdots   \\
-    \color{Mycolor1}m_{n,1} \color{black}\cdot \color{red}v_1 \color{black}+ \color{Mycolor1}m_{n,2} \color{black}\cdot \color{blue}v_2 \color{black} + \color{black}\cdots \color{black}+ \color{Mycolor1}m_{n,n} \color{black}\cdot \color{Mycolor1}v_n
+    m_{n,1} \color{black}\cdot v_1 \color{black}+ m_{n,2} \color{black}\cdot v_2 \color{black} + \color{black}\cdots \color{black}+ m_{n,n} \color{black}\cdot v_n
     \end{bmatrix} 
-    mod\,2
+    mod\,2.
     $$
 
 \newpage
 \section{Encryption \& decryption example}
-    Let message be as follows: $$m = 101011$$\\
+    Let message be as follows: $$m = 101011.$$\\
     \indent Lets set a pair of $3x3$ encryption-decryption matrices, which are inverse to each other:
-    $$M_{EN} = {M_{DE}}^{-1}$$
+    $$M_{EN} = {M_{DE}}^{-1},$$
     \vspace{1mm}
     $$M_{EN}=\begin{bmatrix}
     1 & 1 & 1 \\
@@ -193,7 +193,7 @@
     0 & 1 & 1 \\
     1 & 0 & 1 \\
     0 & 1 & 0
-    \end{bmatrix}$$ \vspace{2mm}
+    \end{bmatrix}.$$ \vspace{2mm}
     
     \subsection{Encryption process}
         Firstly, lets divide it into vectors $V_i$, each of length $3$.
@@ -207,7 +207,7 @@
         0  \\
         1  \\
         1  
-        \end{bmatrix}$$
+        \end{bmatrix}.$$
     
         Lets encrypt $V_1$ by multiplying matrix $M_{EN}$ by vector $V_1$.
         $$
@@ -230,7 +230,7 @@
         0  \\
         1  \\
         0  
-        \end{bmatrix}
+        \end{bmatrix},
         $$
         
         $$
@@ -238,7 +238,7 @@
         1  \\
         0  \\
         1  
-        \end{bmatrix}$$
+        \end{bmatrix}.$$
         \vspace{5mm}
         
         Now, lets encrypt $V_2$ by multiplying matrix $M_{EN}$ by vector $V_2$.
@@ -262,7 +262,7 @@
         1  \\
         0  \\
         0  
-        \end{bmatrix}
+        \end{bmatrix},
         $$
         
         $$
@@ -270,14 +270,14 @@
         1  \\
         0  \\
         0  
-        \end{bmatrix}$$
+        \end{bmatrix}.$$
         \vspace{5mm}
         So the encrypted message (ciphertext) $c$ is a sequence of $V_{1EN}$ and $V_{2EN}$ elements. 
-        $$c = 010100$$
+        $$c = 010100.$$
 \newpage
     \subsection{Decryption process}
         The ciphertext from the previous example is:
-        $$c = 010100$$
+        $$c = 010100.$$
         
         In order to decrypt the ciphertext, lets divide it into vectors $V_i$, each of length $3$.
         \vspace{1mm}
@@ -290,7 +290,7 @@
         1  \\
         0  \\
         0  
-        \end{bmatrix}$$
+        \end{bmatrix}.$$
 
         Lets decrypt $V_1$ by multiplying matrix $M_{DE}$ by vector $V_1$.
         $$
@@ -313,7 +313,7 @@
         1  \\
         0  \\
         1  
-        \end{bmatrix}
+        \end{bmatrix},
         $$
         
         $$
@@ -321,7 +321,7 @@
         1  \\
         0  \\
         1  
-        \end{bmatrix}$$
+        \end{bmatrix}.$$
         \vspace{5mm}
         
         Now, lets decrypt $V_2$ by multiplying matrix $M_{DE}$ by vector $V_2$.
@@ -345,7 +345,7 @@
         0  \\
         1  \\
         1  
-        \end{bmatrix}
+        \end{bmatrix},
         $$
         
         $$
@@ -353,7 +353,7 @@
         0  \\
         1  \\
         1  
-        \end{bmatrix}$$
+        \end{bmatrix}.$$
         \vspace{5mm}
         
         So the decrypted message $m$ is a sequence of $V_{1DE}$ and $V_{2DE}$ elements
